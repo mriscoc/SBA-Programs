@@ -1,18 +1,17 @@
 -- /SBA: Program Details -------------------------------------------------------
 --
--- Project Name: Counter
--- Title: Simple counter demo for SBA
+-- Project Name: LedCounter
+-- Title: Simple led counter demo
 -- Version: 0.1.1
--- Date: 2015/06/20
+-- Date: 2015/06/30
 -- Author: Miguel A. Risco-Castillo
--- Description: This demo implement a simple 16bits counter, the output of the 
--- counter is shown in a four digits display.
+-- Description: 8 Led Counter demo
 -- 
 -- /SBA: End -------------------------------------------------------------------
 
 -- /SBA: User Registers and Constants ------------------------------------------
-  variable count   : unsigned(15 downto 0);
-  variable Dlytmp  : unsigned(23 downto 0);      -- Delay 16 bit register
+  variable Dlytmp  : unsigned(21 downto 0);      -- Delay 22 bit register
+  variable Count   : unsigned(7 downto 0);       -- Counter variable
 
 -- /SBA: End -------------------------------------------------------------------
 
@@ -33,13 +32,14 @@
 ------------------------------ MAIN PROGRAM ------------------------------------
 
 -- /L:Init
-=> clr(count);
+=> clr(Count);
 
--- /L:CounterLoop
-=> SBAWrite(D7S_S,count);
+-- /L:MainLoop
+=> SBAWrite(GPIO,Count);
    Dlytmp:=(others=>'1');
    SBACall(Delay);
-=> inc(count);
-   SBAJump(CounterLoop);
+
+=> inc(Count);
+   SBAjump(MainLoop);
 
 -- /SBA: End -------------------------------------------------------------------
